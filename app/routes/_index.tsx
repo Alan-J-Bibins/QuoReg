@@ -1,6 +1,6 @@
 import { Button, Input, Popup, TextArea } from "pixel-retroui";
 import { useState } from "react";
-import { Form, redirect, useLoaderData, type ActionFunctionArgs } from "react-router";
+import { Form, redirect, useLoaderData, useRevalidator, type ActionFunctionArgs } from "react-router";
 import { getRandomQuote, newQuote } from "~/database.server"
 
 export const loader = async () => {
@@ -34,12 +34,27 @@ export default function Page() {
 
     const openPopup = () => setIsPopupOpen(true);
     const closePopup = () => setIsPopupOpen(false);
+    const revalidator = useRevalidator();
 
     return (
         <div className="flex flex-col gap-4 p-4 h-full">
-            <span className="text-6xl shadow-text-sm text-[#BC948F]">
-                Wacky Quotes
-            </span>
+            <div className="flex items-center justify-between w-full">
+                <span className="text-6xl shadow-text-sm text-[#BC948F]">
+                    Wacky Quotes
+                </span>
+                <Button
+                    type="button"
+                    onClick={() => revalidator.revalidate()}
+                    bg="#FFDFCF"
+                    shadow="#BC948F"
+                >
+                    <img
+                        src="restart-pixel.svg"
+                        height={30}
+                        width={30}
+                    />
+                </Button>
+            </div>
             <div className="text-center shadow-text">
                 {quote && (
                     <div className="w-full flex flex-col motion-preset-rebound-down motion-delay-100">
@@ -66,6 +81,7 @@ export default function Page() {
                 baseBg="#F1818B"
                 borderColor="#000000"
                 textColor="#312324"
+                className="motion-blur-in motion-duration-150 motion-preset-shrink"
             >
                 <Form
                     id="newQuoteForm"
